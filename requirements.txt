@@ -1,0 +1,2 @@
+# Python dependencies for invoice PDF generation
+weasyprint>=60.0

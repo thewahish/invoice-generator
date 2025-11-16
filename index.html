@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoice Generator</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #EC008C;
+    margin-top: 0;
+  }
+  .form-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+  .form-section h2 {
+    margin-top: 0;
+    color: #292663;
+    font-size: 18px;
+    border-bottom: 2px solid #00AEEF;
+    padding-bottom: 8px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #374151;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #00AEEF;
+    box-shadow: 0 0 0 3px rgba(0,174,239,0.1);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
+
+  /* Line Items */
+  .line-item {
+    display: grid;
+    grid-template-columns: 150px 2fr 100px 100px 120px 50px;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: end;
+  }
+  .line-item input {
+    margin-bottom: 0;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #00AEEF, #EC008C);
+    color: white;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236,0,140,0.3);
+  }
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+  .btn-secondary:hover {
+    background: #4b5563;
+  }
+  .btn-danger {
+    background: #ef4444;
+    color: white;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .btn-danger:hover {
+    background: #dc2626;
+  }
+  .btn-success {
+    background: #10b981;
+    color: white;
+    padding: 8px 16px;
+    margin-top: 10px;
+  }
+  .btn-success:hover {
+    background: #059669;
+  }
+  .actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  .line-items-header {
+    display: grid;
+    grid-template-columns: 150px 2fr 100px 100px 120px 50px;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #6b7280;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Invoice Generator</h1>
+
+    <form id="invoiceForm">
+      <!-- Business Info -->
+      <div class="form-section">
+        <h2>Your Business Information</h2>
+        <div class="form-group">
+          <label>Business Name</label>
+          <input type="text" id="businessName" value="Obai Sukar" required>
+        </div>
+        <div class="form-group">
+          <label>Business Address</label>
+          <textarea id="businessAddress" rows="3" required>1134 S Linden Rd, Ste 8
+Flint, MI 48532
+www.obaisukar.com</textarea>
+        </div>
+        <div class="form-group">
+          <label>Logo URL (optional - leave blank to use text)</label>
+          <input type="text" id="logoUrl" value="assets/obai_sukar_logo.png" placeholder="https://example.com/logo.svg or path to local file">
+        </div>
+      </div>
+
+      <!-- Client Info -->
+      <div class="form-section">
+        <h2>Bill To</h2>
+        <div class="form-group">
+          <label>Client Name</label>
+          <input type="text" id="clientName" required>
+        </div>
+        <div class="form-group">
+          <label>Client Address</label>
+          <textarea id="clientAddress" rows="3" required></textarea>
+        </div>
+      </div>
+
+      <!-- Invoice Details -->
+      <div class="form-section">
+        <h2>Invoice Details</h2>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Invoice Number</label>
+            <input type="text" id="invoiceNumber" required>
+          </div>
+          <div class="form-group">
+            <label>Invoice Date</label>
+            <input type="date" id="invoiceDate" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="form-section">
+        <h2>Services / Line Items</h2>
+        <div class="line-items-header">
+          <div>Date</div>
+          <div>Description</div>
+          <div>Hours/Qty</div>
+          <div>Rate</div>
+          <div>Amount</div>
+          <div></div>
+        </div>
+        <div id="lineItemsContainer">
+          <!-- Line items will be added here -->
+        </div>
+        <button type="button" class="btn btn-success" onclick="addLineItem()">+ Add Line Item</button>
+      </div>
+
+      <!-- Footer -->
+      <div class="form-section">
+        <h2>Footer / Payment Terms</h2>
+        <div class="form-group">
+          <label>Footer Text</label>
+          <textarea id="footerText" rows="8">Thank you for your business. Payment due immediately upon receipt.
+
+Payment Methods:
+PayPal: obai.sukar@gmail.com
+Zelle: obai.sukar@gmail.com
+Bank Transfer (add $50 fee):
+JPMORGAN CHASE BANK, N.A.
+SWIFT: CHASUS33XXX | Routing: 072000326 | Account: 636336856</textarea>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="button" class="btn btn-primary" onclick="generateInvoice()">Generate Invoice Preview</button>
+        <button type="button" class="btn btn-secondary" onclick="downloadHTML()">Download HTML</button>
+        <button type="button" class="btn btn-secondary" onclick="saveData()">Save Data (JSON)</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let lineItemCount = 0;
+
+    // Initialize with one line item
+    document.addEventListener('DOMContentLoaded', function() {
+      addLineItem();
+      // Set today's date
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('invoiceDate').value = today;
+    });
+
+    function addLineItem() {
+      lineItemCount++;
+      const container = document.getElementById('lineItemsContainer');
+      const lineItem = document.createElement('div');
+      lineItem.className = 'line-item';
+      lineItem.id = `lineItem${lineItemCount}`;
+      lineItem.innerHTML = `
+        <input type="text" placeholder="Sep 22, 2025" data-field="date" onchange="calculateAmount(${lineItemCount})">
+        <input type="text" placeholder="Service description" data-field="description" onchange="calculateAmount(${lineItemCount})">
+        <input type="number" step="0.01" placeholder="0.00" data-field="hours" onchange="calculateAmount(${lineItemCount})">
+        <input type="number" step="0.01" placeholder="0.00" data-field="rate" onchange="calculateAmount(${lineItemCount})">
+        <input type="number" step="0.01" placeholder="0.00" data-field="amount" readonly style="background:#f9fafb;">
+        <button type="button" class="btn btn-danger" onclick="removeLineItem(${lineItemCount})">×</button>
+      `;
+      container.appendChild(lineItem);
+    }
+
+    function removeLineItem(id) {
+      const lineItem = document.getElementById(`lineItem${id}`);
+      if (lineItem) {
+        lineItem.remove();
+      }
+      calculateTotals();
+    }
+
+    function calculateAmount(id) {
+      const lineItem = document.getElementById(`lineItem${id}`);
+      if (!lineItem) return;
+
+      const hours = parseFloat(lineItem.querySelector('[data-field="hours"]').value) || 0;
+      const rate = parseFloat(lineItem.querySelector('[data-field="rate"]').value) || 0;
+      const amount = hours * rate;
+
+      lineItem.querySelector('[data-field="amount"]').value = amount.toFixed(2);
+      calculateTotals();
+    }
+
+    function calculateTotals() {
+      const amounts = document.querySelectorAll('[data-field="amount"]');
+      let total = 0;
+      amounts.forEach(input => {
+        total += parseFloat(input.value) || 0;
+      });
+      return total;
+    }
+
+    function getLineItems() {
+      const lineItems = [];
+      const container = document.getElementById('lineItemsContainer');
+      const items = container.querySelectorAll('.line-item');
+
+      items.forEach(item => {
+        const date = item.querySelector('[data-field="date"]').value;
+        const description = item.querySelector('[data-field="description"]').value;
+        const hours = item.querySelector('[data-field="hours"]').value;
+        const rate = item.querySelector('[data-field="rate"]').value;
+        const amount = item.querySelector('[data-field="amount"]').value;
+
+        if (description) {
+          lineItems.push({ date, description, hours, rate, amount });
+        }
+      });
+
+      return lineItems;
+    }
+
+    function formatCurrency(amount) {
+      return '$' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function generateInvoice() {
+      const data = {
+        businessName: document.getElementById('businessName').value,
+        businessAddress: document.getElementById('businessAddress').value,
+        logoUrl: document.getElementById('logoUrl').value,
+        clientName: document.getElementById('clientName').value,
+        clientAddress: document.getElementById('clientAddress').value,
+        invoiceNumber: document.getElementById('invoiceNumber').value,
+        invoiceDate: document.getElementById('invoiceDate').value,
+        footerText: document.getElementById('footerText').value,
+        lineItems: getLineItems()
+      };
+
+      const invoiceHTML = createInvoiceHTML(data);
+
+      // Open in new window
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(invoiceHTML);
+      newWindow.document.close();
+    }
+
+    function downloadHTML() {
+      const data = {
+        businessName: document.getElementById('businessName').value,
+        businessAddress: document.getElementById('businessAddress').value,
+        logoUrl: document.getElementById('logoUrl').value,
+        clientName: document.getElementById('clientName').value,
+        clientAddress: document.getElementById('clientAddress').value,
+        invoiceNumber: document.getElementById('invoiceNumber').value,
+        invoiceDate: document.getElementById('invoiceDate').value,
+        footerText: document.getElementById('footerText').value,
+        lineItems: getLineItems()
+      };
+
+      const invoiceHTML = createInvoiceHTML(data);
+
+      const blob = new Blob([invoiceHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `invoice-${data.invoiceNumber}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function saveData() {
+      const data = {
+        businessName: document.getElementById('businessName').value,
+        businessAddress: document.getElementById('businessAddress').value,
+        logoUrl: document.getElementById('logoUrl').value,
+        clientName: document.getElementById('clientName').value,
+        clientAddress: document.getElementById('clientAddress').value,
+        invoiceNumber: document.getElementById('invoiceNumber').value,
+        invoiceDate: document.getElementById('invoiceDate').value,
+        footerText: document.getElementById('footerText').value,
+        lineItems: getLineItems()
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `invoice-${data.invoiceNumber}-data.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function createInvoiceHTML(data) {
+      const lineItemsHTML = data.lineItems.map(item => `
+          <tr>
+            <td>
+              <div class="service-date">${item.date}</div>
+            </td>
+            <td>${item.description}</td>
+            <td class="num">${parseFloat(item.hours).toFixed(2)}</td>
+            <td class="num">${formatCurrency(item.rate)}</td>
+            <td class="num">${formatCurrency(item.amount)}</td>
+          </tr>`).join('');
+
+      const subtotal = data.lineItems.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+
+      const logoHTML = data.logoUrl
+        ? `<img src="${data.logoUrl}" alt="${data.businessName} Logo">`
+        : `<h2 style="font-size:18pt;margin:0;color:#292663;font-weight:600;">${data.businessName}</h2>`;
+
+      const businessAddressLines = data.businessAddress.split('\n').join('<br>');
+      const clientAddressLines = data.clientAddress.split('\n').join('<br>');
+      const footerTextLines = data.footerText.split('\n').join('<br>');
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoice — ${data.businessName}</title>
+<style>
+  /* Page */
+  @page { size: Letter; margin: 0.75in; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11pt/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: #1f2330;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    margin: 0;
+    padding: 0;
+  }
+  .wrap {
+    width: 7.5in;
+    min-height: 10in;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 2.5in;
+  }
+
+  /* Header */
+  .header {
+    display: grid;
+    grid-template-columns: 2in 1fr 2in;
+    gap: 0.25in;
+    align-items: start;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.15in;
+    margin-bottom: 0.25in;
+  }
+  .header img {
+    width: 1.5in;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .brand {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand img { width: 180px; height: auto; display: block; }
+  .addr { font-size: 12px; color: #4b5563; }
+
+  .inv-meta {
+    text-align: right;
+  }
+  .inv-title {
+    font-size: 26px;
+    letter-spacing: .5px;
+    margin: 0;
+    color: #111827;
+  }
+  .meta {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #374151;
+  }
+  .meta strong { color: #111827; }
+
+  /* Blocks */
+  .block { margin-bottom: 20px; }
+  .block h3 {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 0 0 8px;
+  }
+  .panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #fafafa;
+  }
+
+  /* Table */
+  .services-table {
+    width: 100%;
+    margin-bottom: 0.3in;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(41,38,99,0.1);
+  }
+  .services-table thead {
+    background: linear-gradient(135deg, #00AEEF, #EC008C);
+    color: white;
+  }
+  .services-table th {
+    padding: 0.12in 0.15in;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.3pt;
+  }
+  .services-table th:last-child {
+    text-align: right;
+  }
+  .services-table tbody tr {
+    border-bottom: 1px solid rgba(41,38,99,0.1);
+  }
+  .services-table tbody tr:nth-child(even) {
+    background-color: rgba(0,174,239,0.03);
+  }
+  .services-table td {
+    padding: 0.1in 0.15in;
+    font-size: 11pt;
+    color: #292663;
+  }
+  .services-table td:last-child {
+    text-align: right;
+    font-weight: 500;
+  }
+  .service-date {
+    font-weight: 600;
+    color: #00AEEF;
+    font-size: 10pt;
+  }
+  .service-time {
+    color: #92278F;
+    font-size: 9pt;
+  }
+  .num { text-align: right; white-space: nowrap; }
+
+  /* Totals */
+  .totals {
+    display: grid;
+    grid-template-columns: 1fr 3in;
+    gap: 0.25in;
+    margin-top: 0.25in;
+    align-items: start;
+  }
+  .totals .box {
+    background: linear-gradient(135deg, rgba(251,176,76,0.1) 0%, rgba(236,0,140,0.1) 100%);
+    border-radius: 8px;
+    padding: 0.2in;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11pt;
+    padding: 0.05in 0;
+  }
+  .row.total {
+    border-top: 2px solid #EC008C;
+    margin-top: 0.08in;
+    padding-top: 0.1in;
+    font-weight: 700;
+    font-size: 13pt;
+    color: #292663;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 7.5in;
+    margin: 0 auto;
+    padding-top: 0.15in;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 9pt;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  /* Print tweaks */
+  @media print {
+    .panel { background: #fff; }
+    tbody tr:hover { background: transparent; }
+  }
+
+  /* Keep sections together */
+  table, thead, tbody, tr, td, th {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .services-table {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .totals, .totals * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <div class="header">
+      <div style="text-align:left;">
+        <h3 style="font-size:9pt;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin:0 0 0.08in;font-weight:600;">Bill To</h3>
+        <div style="font-size:10pt;line-height:1.3;color:#292663;">
+          ${clientAddressLines}
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        ${logoHTML}
+        <div style="font-size:9pt;margin-top:0.08in;line-height:1.3;color:#292663;">
+          ${businessAddressLines}
+        </div>
+      </div>
+
+      <div class="invoice-details" style="text-align:right;">
+        <h2 style="font-size:20pt;margin:0;color:#EC008C;font-weight:700;">INVOICE</h2>
+        <p style="font-size:10pt;margin:0.05in 0;"><strong>Invoice #:</strong> ${data.invoiceNumber}</p>
+        <p style="font-size:10pt;margin:0.05in 0;"><strong>Date:</strong> ${formatDate(data.invoiceDate)}</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <section class="block" style="margin-top: 0.2in;">
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th style="width:18%">Date</th>
+            <th style="width:57%">Service Description</th>
+            <th style="width:8%">Hours</th>
+            <th style="width:8%">Rate</th>
+            <th style="width:9%" class="num">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${lineItemsHTML}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Totals -->
+    <section class="totals">
+      <div></div>
+      <div class="box">
+        <div class="row"><span>Subtotal</span><span>${formatCurrency(subtotal)}</span></div>
+        <div class="row total"><span>Total Due</span><span>${formatCurrency(subtotal)}</span></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      ${footerTextLines}
+    </footer>
+  </div>
+</body>
+</html>`;
+    }
+  </script>
+</body>
+</html>

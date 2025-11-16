@@ -1,0 +1,19 @@
+{
+  "businessName": "Obai Sukar",
+  "businessAddress": "1134 S Linden Rd, Ste 8\nFlint, MI 48532\nwww.obaisukar.com",
+  "logoUrl": "../assets/obai_sukar_logo.png",
+  "clientName": "Abdulwareth Lahham",
+  "clientAddress": "",
+  "invoiceNumber": "14",
+  "invoiceDate": "2025-11-14",
+  "footerText": "Thank you for your business. Payment due immediately upon receipt.\n\nPayment Methods:\nPayPal: obai.sukar@gmail.com\nZelle: obai.sukar@gmail.com\nBank Transfer (add $50 fee):\nJPMORGAN CHASE BANK, N.A.\nSWIFT: CHASUS33XXX | Routing: 072000326 | Account: 636336856",
+  "lineItems": [
+    {
+      "date": "November 2025",
+      "description": "Voiceover Services",
+      "hours": "",
+      "rate": "",
+      "amount": "250.00"
+    }
+  ]
+}

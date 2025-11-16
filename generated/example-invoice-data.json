@@ -1,0 +1,26 @@
+{
+  "businessName": "Obai Sukar",
+  "businessAddress": "1134 S Linden Rd, Ste 8\nFlint, MI 48532\nwww.obaisukar.com",
+  "logoUrl": "",
+  "clientName": "Example Client",
+  "clientAddress": "123 Main Street\nCity, ST 12345",
+  "invoiceNumber": "001",
+  "invoiceDate": "2025-01-15",
+  "footerText": "Thank you for your business. Payment due immediately upon receipt.",
+  "lineItems": [
+    {
+      "date": "January 15, 2025",
+      "description": "Audio System Setup and Configuration",
+      "hours": "3.00",
+      "rate": "135.00",
+      "amount": "405.00"
+    },
+    {
+      "date": "January 16, 2025",
+      "description": "Technical Audio Direction & Sound Engineering",
+      "hours": "4.50",
+      "rate": "100.00",
+      "amount": "450.00"
+    }
+  ]
+}

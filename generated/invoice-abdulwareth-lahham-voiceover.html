@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoice — Obai Sukar</title>
+<style>
+  /* Page */
+  @page { size: Letter; margin: 0.75in; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11pt/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: #1f2330;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    margin: 0;
+    padding: 0;
+  }
+  .wrap {
+    width: 7.5in;
+    min-height: 10in;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 2.5in;
+  }
+
+  /* Header */
+  .header {
+    display: grid;
+    grid-template-columns: 2in 1fr 2in;
+    gap: 0.25in;
+    align-items: start;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.15in;
+    margin-bottom: 0.25in;
+  }
+  .header img {
+    width: 1.5in;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .brand {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand img { width: 180px; height: auto; display: block; }
+  .addr { font-size: 12px; color: #4b5563; }
+
+  .inv-meta {
+    text-align: right;
+  }
+  .inv-title {
+    font-size: 26px;
+    letter-spacing: .5px;
+    margin: 0;
+    color: #111827;
+  }
+  .meta {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #374151;
+  }
+  .meta strong { color: #111827; }
+
+  /* Blocks */
+  .block { margin-bottom: 20px; }
+  .block h3 {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 0 0 8px;
+  }
+  .panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #fafafa;
+  }
+
+  /* Table */
+  .services-table {
+    width: 100%;
+    margin-bottom: 0.3in;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(41,38,99,0.1);
+  }
+  .services-table thead {
+    background: linear-gradient(135deg, #00AEEF, #EC008C);
+    color: white;
+  }
+  .services-table th {
+    padding: 0.12in 0.15in;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.3pt;
+  }
+  .services-table th:last-child {
+    text-align: right;
+  }
+  .services-table tbody tr {
+    border-bottom: 1px solid rgba(41,38,99,0.1);
+  }
+  .services-table tbody tr:nth-child(even) {
+    background-color: rgba(0,174,239,0.03);
+  }
+  .services-table td {
+    padding: 0.1in 0.15in;
+    font-size: 11pt;
+    color: #292663;
+  }
+  .services-table td:last-child {
+    text-align: right;
+    font-weight: 500;
+  }
+  .service-date {
+    font-weight: 600;
+    color: #00AEEF;
+    font-size: 10pt;
+  }
+  .service-time {
+    color: #92278F;
+    font-size: 9pt;
+  }
+  .num { text-align: right; white-space: nowrap; }
+
+  /* Totals */
+  .totals {
+    display: grid;
+    grid-template-columns: 1fr 3in;
+    gap: 0.25in;
+    margin-top: 0.25in;
+    align-items: start;
+  }
+  .totals .box {
+    background: linear-gradient(135deg, rgba(251,176,76,0.1) 0%, rgba(236,0,140,0.1) 100%);
+    border-radius: 8px;
+    padding: 0.2in;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11pt;
+    padding: 0.05in 0;
+  }
+  .row.total {
+    border-top: 2px solid #EC008C;
+    margin-top: 0.08in;
+    padding-top: 0.1in;
+    font-weight: 700;
+    font-size: 13pt;
+    color: #292663;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 7.5in;
+    margin: 0 auto;
+    padding-top: 0.15in;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 9pt;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+  .payment-methods {
+    margin-top: 0.1in;
+    padding-top: 0.1in;
+    border-top: 1px solid #e5e7eb;
+    font-size: 8.5pt;
+    line-height: 1.4;
+  }
+  .payment-methods strong {
+    color: #292663;
+    font-size: 9pt;
+  }
+  .payment-option {
+    margin: 0.02in 0;
+  }
+
+  /* Print tweaks */
+  @media print {
+    .panel { background: #fff; }
+    tbody tr:hover { background: transparent; }
+  }
+
+  /* Keep sections together */
+  table, thead, tbody, tr, td, th {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .services-table {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .totals, .totals * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <div class="header">
+      <div style="text-align:left;">
+        <h3 style="font-size:9pt;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin:0 0 0.08in;font-weight:600;">Bill To</h3>
+        <div style="font-size:10pt;line-height:1.3;color:#292663;">
+          Abdulwareth Lahham
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <img src="../assets/obai_sukar_logo.png" alt="Obai Sukar Logo">
+        <div style="font-size:9pt;margin-top:0.08in;line-height:1.3;color:#292663;">
+          1134 S Linden Rd, Ste 8<br>
+          Flint, MI 48532<br>
+          www.obaisukar.com
+        </div>
+      </div>
+
+      <div class="invoice-details" style="text-align:right;">
+        <h2 style="font-size:20pt;margin:0;color:#EC008C;font-weight:700;">INVOICE</h2>
+        <p style="font-size:10pt;margin:0.05in 0;"><strong>Invoice #:</strong> 14</p>
+        <p style="font-size:10pt;margin:0.05in 0;"><strong>Date:</strong> November 14, 2025</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <section class="block" style="margin-top: 0.2in;">
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th style="width:18%">Date</th>
+            <th style="width:57%">Service Description</th>
+            <th style="width:8%">Hours</th>
+            <th style="width:8%">Rate</th>
+            <th style="width:9%" class="num">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="service-date">November 2025</div>
+            </td>
+            <td>Voiceover Services</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">$250.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Totals -->
+    <section class="totals">
+      <div></div>
+      <div class="box">
+        <div class="row"><span>Subtotal</span><span>$250.00</span></div>
+        <div class="row total"><span>Total Due</span><span>$250.00</span></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div>Thank you for your business. Payment due immediately upon receipt.</div>
+
+      <div class="payment-methods">
+        <div><strong>Payment Methods:</strong></div>
+        <div class="payment-option"><strong>PayPal:</strong> obai.sukar@gmail.com</div>
+        <div class="payment-option"><strong>Zelle:</strong> obai.sukar@gmail.com</div>
+        <div class="payment-option"><strong>Bank Transfer</strong> (add $50 fee):</div>
+        <div style="font-size:10px; margin-top:4px; line-height:1.5;">
+          JPMORGAN CHASE BANK, N.A.<br>
+          SWIFT: CHASUS33XXX | Routing: 072000326 | Account: 636336856
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
