@@ -1,54 +1,145 @@
-﻿# invoice-generator
+# Invoice Generator
+
 **Domain:** Business-Tools
-**Status:** Active - Restructured with Master AI Integration
+**Status:** Active
+**Priority:** Medium
 
-Professional invoice generation system
+Professional invoice generation system for creating, managing, and exporting invoices with HTML and PDF output support.
 
----
+## Overview
 
-## ðŸ¤– Master AI Integration
+A comprehensive invoice generation system designed for freelancers and small businesses to create professional invoices quickly and efficiently. Features a web-based interface with Python-powered PDF generation.
 
-This project is part of Obai's Universal AI Development Ecosystem featuring:
+## Features
 
-- **13-Agent Framework** with domain-specific pipelines
-- **Universal Verification** with trust level tagging
-- **Cross-platform compatibility** (Windows/Mac/Linux/Mobile)
-- **Quest-status tracking** for progress management
-- **Professional GitHub integration** with automated sync
+- Create professional invoices via web interface
+- Multiple currency support
+- Client management
+- Customizable invoice templates
+- PDF export via Python scripts
+- Batch invoice generation
+- JSON data storage for invoices
 
-### Quick Start
-1. Read CLAUDE.md for project-specific AI instructions
-2. Check quest-status.json for current development focus
-3. Follow domain-specific workflows in .claude/ directory
+## Project Structure
 
----
-
-## ðŸ“ Project Structure
-
-`
+```
 invoice-generator/
-â”œâ”€â”€ CLAUDE.md                 # AI assistant instructions
-â”œâ”€â”€ README.md                 # This file  
-â”œâ”€â”€ quest-status.json         # Progress tracking
-â”œâ”€â”€ .claude/                  # Local AI assets
-â”‚   â”œâ”€â”€ logs/                 # Action logs
-â”‚   â”œâ”€â”€ assets/               # Reusable components
-â”‚   â””â”€â”€ backups/              # Version snapshots
-â””â”€â”€ [project files]
-`
+├── index.html                    # Main web interface (20KB)
+│
+├── generated/                    # Generated invoices
+│   ├── example-invoice-data.html # Example invoice HTML
+│   ├── example-invoice-data.json # Example invoice data
+│   ├── invoice-motif-agency-voiceover.html
+│   ├── invoice-motif-agency-voiceover.json
+│   ├── invoice-motif-agency-voiceover-LOCAL.html
+│   ├── Invoice — Motif.pdf       # Generated PDF invoice
+│   └── *.pdf                     # Other generated PDFs
+│
+├── scripts/                      # Python automation
+│   ├── generate_pdf.py           # Single PDF generation
+│   └── batch_generate.py         # Batch PDF generation
+│
+├── templates/                    # Invoice templates
+│
+├── assets/                       # Static assets
+│
+├── requirements.txt              # Python dependencies
+├── CLAUDE.md                     # AI instructions
+├── quest-status.json             # Progress tracking
+└── README.md                     # This file
+```
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| **HTML5/CSS3** | Invoice web interface |
+| **JavaScript** | Form handling and generation |
+| **Python** | PDF generation scripts |
+| **JSON** | Invoice data storage |
+
+## Getting Started
+
+### Prerequisites
+- Modern web browser
+- Python 3.8+ (for PDF generation)
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/thewahish/invoice-generator.git
+cd invoice-generator
+
+# Install Python dependencies (for PDF generation)
+pip install -r requirements.txt
+```
+
+### Usage
+
+1. **Open Interface:** Launch `index.html` in a browser
+2. **Fill Invoice Data:** Enter client and invoice details
+3. **Generate Invoice:** Click generate to create HTML invoice
+4. **Export PDF:** Use Python scripts for PDF export
+
+### Generating PDFs
+
+```bash
+# Generate single PDF
+python scripts/generate_pdf.py
+
+# Batch generate multiple PDFs
+python scripts/batch_generate.py
+```
+
+## Generated Invoices
+
+The `generated/` folder contains example invoices:
+
+| File | Description |
+|------|-------------|
+| `example-invoice-data.html` | Sample invoice HTML |
+| `example-invoice-data.json` | Sample invoice data |
+| `invoice-motif-agency-voiceover.*` | Motif Agency voiceover invoice |
+| `Invoice — Motif.pdf` | Generated PDF example |
+
+## Invoice Data Format
+
+Invoices are stored as JSON:
+
+```json
+{
+  "invoiceNumber": "INV-001",
+  "client": "Client Name",
+  "items": [...],
+  "total": 1000,
+  "currency": "USD"
+}
+```
+
+## Python Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `generate_pdf.py` | Convert single invoice HTML to PDF |
+| `batch_generate.py` | Process multiple invoices at once |
+
+## Templates
+
+The `templates/` folder contains customizable invoice templates. Modify these to match your branding and layout preferences.
+
+## Related Projects
+
+| Project | Relationship |
+|---------|-------------|
+| `business-tools` | Business utilities collection |
+| `personal-finance-management` | Financial management |
+
+## GitHub Repository
+
+[https://github.com/thewahish/invoice-generator](https://github.com/thewahish/invoice-generator)
 
 ---
 
-## ðŸ”— Integration Points
-
-- **Master Ecosystem:** Part of 45+ project development environment
-- **GitHub Sync:** Automated sync with professional workflows
-- **Cross-Project Discovery:** Can interact with other projects
-- **Universal Standards:** Consistent quality gates and documentation
-
----
-
-**Generated with [Claude Code](https://claude.ai/code)**  
-**Co-Authored-By: Claude <noreply@anthropic.com>**
-
-Last Updated: 2025-11-30 18:30:04
+**Developer:** Obai Sukar
+**Last Updated:** December 27, 2025

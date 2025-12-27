@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <style>
+        :root {
+            --primary: #059669;
+            --secondary: #047857;
+            --accent: #34d399;
+            --dark: #064e3b;
+            --text: #ecfdf5;
+            --bg: #022c22;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .meta { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .badge {
+            background: var(--dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--accent);
+        }
+        h2 {
+            color: var(--accent);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--dark);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #0a3d2e;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--dark);
+        }
+        th { background: var(--dark); color: var(--accent); }
+        code {
+            background: var(--dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent);
+        }
+        pre {
+            background: #0a3d2e;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 3px solid var(--primary);
+        }
+        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin: 0.5rem 0; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dark);
+            text-align: center;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Invoice Generator</h1>
+        <div class="meta">
+            <span class="badge">Business-Tools</span>
+            <span class="badge">Active</span>
+            <span class="badge">Python + HTML</span>
+        </div>
+        <p>Professional invoice generation system for creating, managing, and exporting invoices with HTML and PDF output support.</p>
+
+        <h2>Features</h2>
+        <ul>
+            <li>Create professional invoices via web interface</li>
+            <li>Multiple currency support</li>
+            <li>Client management</li>
+            <li>Customizable invoice templates</li>
+            <li>PDF export via Python scripts</li>
+            <li>Batch invoice generation</li>
+            <li>JSON data storage for invoices</li>
+        </ul>
+
+        <h2>Project Structure</h2>
+        <pre>invoice-generator/
+├── index.html               # Main web interface (20KB)
+│
+├── generated/               # Generated invoices
+│   ├── example-invoice-data.html
+│   ├── example-invoice-data.json
+│   ├── invoice-motif-agency-voiceover.html
+│   ├── invoice-motif-agency-voiceover.json
+│   └── Invoice — Motif.pdf
+│
+├── scripts/                 # Python automation
+│   ├── generate_pdf.py      # Single PDF generation
+│   └── batch_generate.py    # Batch PDF generation
+│
+├── templates/               # Invoice templates
+├── assets/                  # Static assets
+├── requirements.txt         # Python dependencies
+└── README.md               # Documentation</pre>
+
+        <h2>Tech Stack</h2>
+        <table>
+            <tr><th>Technology</th><th>Purpose</th></tr>
+            <tr><td><strong>HTML5/CSS3</strong></td><td>Invoice web interface</td></tr>
+            <tr><td><strong>JavaScript</strong></td><td>Form handling and generation</td></tr>
+            <tr><td><strong>Python</strong></td><td>PDF generation scripts</td></tr>
+            <tr><td><strong>JSON</strong></td><td>Invoice data storage</td></tr>
+        </table>
+
+        <h2>Usage</h2>
+        <ol style="margin-left: 1.5rem;">
+            <li>Open <code>index.html</code> in a browser</li>
+            <li>Fill in invoice data</li>
+            <li>Generate invoice HTML</li>
+            <li>Export to PDF with Python scripts</li>
+        </ol>
+
+        <h2>Generating PDFs</h2>
+        <pre># Generate single PDF
+python scripts/generate_pdf.py
+
+# Batch generate multiple PDFs
+python scripts/batch_generate.py</pre>
+
+        <h2>Generated Invoices</h2>
+        <table>
+            <tr><th>File</th><th>Description</th></tr>
+            <tr><td><code>example-invoice-data.html</code></td><td>Sample invoice HTML</td></tr>
+            <tr><td><code>example-invoice-data.json</code></td><td>Sample invoice data</td></tr>
+            <tr><td><code>Invoice — Motif.pdf</code></td><td>Generated PDF example</td></tr>
+        </table>
+
+        <h2>GitHub Repository</h2>
+        <p><a href="https://github.com/thewahish/invoice-generator">https://github.com/thewahish/invoice-generator</a></p>
+
+        <footer>
+            <p><strong>Developer:</strong> Obai Sukar</p>
+            <p>Last Updated: December 27, 2025</p>
+        </footer>
+    </div>
+</body>
+</html>
